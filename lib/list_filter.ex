@@ -1,19 +1,20 @@
 import Integer
 
 defmodule ListFilter do
-  def odd?(elem) do
-    try do
-      String.to_integer(elem)
-    rescue
-      ArgumentError -> false
-    else
-      value -> is_odd(value)
-    end
+  defp odd?(elem) do
+    elem
+    |> Integer.parse()
+    |> handle_parse()
+    |> is_odd()
   end
+
+  defp handle_parse({int, _rest}), do: int
+
+  defp handle_parse(:error), do: nil
 
   def call(list) do
     list
     |> Enum.filter(&odd?/1)
-    |> length
+    |> Enum.count()
   end
 end
